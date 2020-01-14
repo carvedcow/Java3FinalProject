@@ -1,2 +1,0 @@
-# Java3FinalProject
-Galaxy
