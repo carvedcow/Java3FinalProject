@@ -1,4 +1,4 @@
-package com.galaxyview.service;
+package com.galaxyview.dao;
 
 import java.util.List;
 
@@ -6,11 +6,11 @@ import com.galaxyview.model.Building;
 
 //CRUD
 
-public interface BuildingService {
+public interface BuildingDao {
 
 	// methods
 	// Create
-	public boolean addBuilding(Building building);
+	public boolean insertBuilding(Building building);
 
 	// Read
 	public List<Building> getBuildings();

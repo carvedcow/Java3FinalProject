@@ -1,6 +1,6 @@
 package com.galaxyview.model;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +28,7 @@ public class Planet {
 	// that will be used to map the mappedBy variable.
 	// In this case, planet represents the value "planet" inside the Building Class.
 	@OneToMany(mappedBy = "planet")
-	private Set<Building> buildings;
+	private List<Building> buildings;
 	
 	//constructors
 	public Planet() {
@@ -60,11 +60,11 @@ public class Planet {
 		this.planetResource = planetResource;
 	}
 
-	public Set<Building> getBuildings() {
+	public List<Building> getBuildings() {
 		return buildings;
 	}
 
-	public void setBuildings(Set<Building> buildings) {
+	public void setBuildings(List<Building> buildings) {
 		this.buildings = buildings;
 	}
 	
