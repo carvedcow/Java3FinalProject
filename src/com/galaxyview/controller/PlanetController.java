@@ -25,5 +25,21 @@ public class PlanetController {
 		mv.addObject("planetList", planets);
 		mv.addObject("planet", new Planet());
 		return mv;
-	}	
+	}
+	
+	@RequestMapping(value = "/addPlanet")
+	public ModelAndView getAddPlanet() {
+		ModelAndView mv = new ModelAndView("addPlanet");
+		mv.addObject("planet", new Planet());
+		return mv;
+	}
+	
+	@RequestMapping(value = "/addingPlanet")
+	public String addingPlanet(Planet planet) {
+		String returnString = "redirect:/planets/planetList";
+		
+		planetService.addPlanet(planet);
+		
+		return returnString;
+	}
 }

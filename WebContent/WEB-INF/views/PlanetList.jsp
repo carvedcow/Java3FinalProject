@@ -21,6 +21,7 @@
 				<tr>
 					<td><c:out value="${planet.planetName}"></c:out></td>
 					<td><c:out value="${planet.planetResource}"></c:out></td>
+					<td><a href="getBuildings?planetId=${planet.planetId}">View Buildings</a></td>
 					<td><a href="editPlanet?planetId=${planet.planetId}">Collect Resources</a></td>
 					<td><a href="deletePlanet?planetId=${planet.planetId}">Abandon Planet</a></td>
 				</tr>
