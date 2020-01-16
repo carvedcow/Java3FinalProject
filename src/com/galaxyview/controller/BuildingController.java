@@ -1,94 +1,104 @@
 package com.galaxyview.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.galaxyview.model.Building;
+import com.galaxyview.model.Planet;
 import com.galaxyview.service.BuildingService;
+import com.galaxyview.service.PlanetService;
 
 @Controller
 @RequestMapping("/buildings")
 public class BuildingController {
-	
+
+	@Autowired
+	PlanetService planetService;
+
 	@Autowired
 	BuildingService buildingService;
+
+	// PLANET LIST PAGE
+	@RequestMapping(value = "/buildingList")
+	public ModelAndView getBuildingList(int planetId, String planetName, int planetResource) {
+		ModelAndView mv = new ModelAndView("BuildingList");
+
+		List<Building> Buildings = buildingService.getBuildings();
+		List<Building> validBuildings = new ArrayList<Building>();
+		
+		for (Building b : Buildings) {
+			if (b.getPlanetId() == planetId) {
+				validBuildings.add(b);
+			}
+		}
+		
+		mv.addObject("buildingList", validBuildings);
+		mv.addObject("building", new Building());
+		return mv;
+	}
+
+	// ADDING BUILDINGS PAGE
+	@RequestMapping(value = "/addBuilding")
+	public ModelAndView getAddBuilding(int planetId) {
+		ModelAndView mv = new ModelAndView("addBuilding");
+		mv.addObject("building", new Building(planetId));
+		
+		return mv;
+	}
+
+	// ADDING BUILDINGS ACTION
+	@RequestMapping(value = "/addingBuilding")
+	public String addingBuilding(Building building) {
+		
+		String returnString = "redirect:/planets/planetList";
+		building.setBuildingCost(10);
+		building.setBuildingLevel(1);
+		buildingService.addBuilding(building);
+
+		return returnString;
+	}
 	
-	@RequestMapping("/testmethod")
-	public ModelAndView getName() {
-		ModelAndView mv = new ModelAndView("test-jsp");
-		mv.addObject("obj", "reza");
-
-		return mv;
-	}
-
-	@RequestMapping(value = "/getstudents", method = RequestMethod.GET)
-	public ModelAndView getStudentsList() {
-		ModelAndView modelView = new ModelAndView("student-list");
-
-		List<StudentEntity> students = service.getStudents();
-		modelView.addObject("studList", students);
-		modelView.addObject("student", new StudentEntity());
-
-		return modelView;
-	}
-
-	// ..../testconfigproject/students/student/Alex
-	// Alex would be passed via path variable
-	@RequestMapping(value = "/student/{name}", method = RequestMethod.GET)
-	public ModelAndView getStudent(@PathVariable("name") String studentName) {
-		ModelAndView modelView = new ModelAndView("student");
-		modelView.addObject("studentName", studentName);
-
-		return modelView;
-	}
-
-	@RequestMapping(value = "addstudent")
-	public ModelAndView addStudent() {
-		ModelAndView mv = new ModelAndView("add-student");
-		mv.addObject("student", new StudentEntity());
-		return mv;
-	}
-	
-	@RequestMapping(value = "saveStudent", method = RequestMethod.POST)
-	public String saveStudent(@ModelAttribute("student") StudentEntity std) {
-		if (service.addStudent(std))
-			return "redirect:/students/getstudents";
-		else {
-			return "ErrorPage";
+	// UPGRADING BUILDING ACTION
+		@RequestMapping(value = "/upgradingBuilding")
+		public String upgradingBuilding(int planetId, int buildingId) {
+			String returnString = "redirect:/planets/planetList";
+			
+			Planet fetchedPlanet = planetService.getPlanetById(planetId);
+			Building fetchedBuilding = buildingService.getBuildingById(buildingId);
+			
+			int resource = fetchedPlanet.getPlanetResource();
+			int cost = fetchedBuilding.getBuildingCost();
+			int currentLevel = fetchedBuilding.getBuildingLevel();
+			
+			if(resource >= cost) {
+				resource = resource - cost;
+				cost *= 2;
+				currentLevel += 1;
+			}
+			
+			fetchedPlanet.setPlanetResource(resource);
+			fetchedBuilding.setBuildingCost(cost);
+			fetchedBuilding.setBuildingLevel(currentLevel);
+			
+			planetService.updatePlanet(fetchedPlanet);
+			buildingService.updateBuilding(fetchedBuilding);
+			
+			
+			return returnString;
 		}
-	}
-
-	@RequestMapping(value = "deletestudent")
-	public String deleteStudent(@RequestParam("studentId") int studentId) {
-		if (service.deleteStudent(studentId)) {
-			return "redirect:/students/getstudents";
+		
+		// DELETE BUILDING ACTION
+		@RequestMapping(value = "/deletingBuilding")
+		public String deletingPlanet(int buildingId) {
+			String returnString = "redirect:/planets/planetList";
+			
+			buildingService.deleteBuilding(buildingId);
+			
+			return returnString;
 		}
-		else {
-			return "ErrorPage";
-		}
-	}
-
-	@RequestMapping(value = "editstudent")
-	public ModelAndView editStudent(@RequestParam("studentId") int studentId) {
-		ModelAndView mv = new ModelAndView("update-student");
-		StudentEntity fetchedStudent = service.getStudentById(studentId);
-		mv.addObject("editedstudent", fetchedStudent);
-		return mv;
-	}
-
-	@RequestMapping(value = "updateStudent")
-	public String updateStudent(@ModelAttribute("student") StudentEntity std) {
-		if (service.updateStudent(std)) {
-			return "redirect:/students/getstudents";
-		} else {
-			return "ErrorPage";
-		}
-	}
 }

@@ -10,7 +10,7 @@ public interface PlanetService {
 
 	// methods
 	// Create
-	public boolean addPlanet();
+	public boolean addPlanet(Planet planet);
 
 	// Read
 	public List<Planet> getPlanets();

@@ -5,8 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -27,13 +25,20 @@ public class Building {
 	@Column(name = "buildingLevel")
 	private int buildingLevel;
 	
-	@ManyToOne
-	@JoinColumn(name="planetId", nullable=false)
-	private Planet planet;
+	@Column(name = "planetId")
+	private int planetId;
+	
+//	@ManyToOne
+//	@JoinColumn(name="planetId", nullable=false)
+//	private Planet planet;
 	
 	//constructors
 	public Building() {
 		
+	}
+	
+	public Building(int planetId) {
+		this.planetId = planetId;
 	}
 	
 	//methods
@@ -61,12 +66,22 @@ public class Building {
 	public void setBuildingLevel(int buildingLevel) {
 		this.buildingLevel = buildingLevel;
 	}
-	public Planet getPlanet() {
-		return planet;
+
+	public int getPlanetId() {
+		return planetId;
 	}
-	public void setPlanet(Planet planet) {
-		this.planet = planet;
+
+	public void setPlanetId(int planetId) {
+		this.planetId = planetId;
 	}
+
+	
+//	public Planet getPlanet() {
+//		return planet;
+//	}
+//	public void setPlanet(Planet planet) {
+//		this.planet = planet;
+//	}
 	
 	
 }

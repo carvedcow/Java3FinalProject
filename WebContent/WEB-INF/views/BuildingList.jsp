@@ -6,34 +6,30 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Buildings</title>
 </head>
 <body>
-	<div>
-		<a href="addstudent">Add a new student</a>
-	</div>
-
+	<div><a href="addBuilding?planetId=${param.planetId}">Construct new building.</a></div>
+	<div hidden="true">Current planetId: ${param.planetId}</div>
+	<div>Current Planet: ${param.planetName}</div>
+	<div>Current Resources: ${param.planetResource}</div>
 	<div align="center">
-		Cool Student List
+		Current Buildings
 		<table border="1">
 			<tr>
-				<th>first name</th>
-				<th>last name</th>
-				<th>age</th>
+				<th>Name</th>
+				<th>Cost</th>
+				<th>Level</th>
 			</tr>
-
-			<c:forEach var="student" items="${studList}">
+			<c:forEach var="building" items="${buildingList}">
 				<tr>
-					<td><c:out value="${student.firstName}"></c:out></td>
-					<td><c:out value="${student.lastName}"></c:out></td>
-					<td><c:out value="${student.age}"></c:out></td>
-					<td><a href="editstudent?studentId=${student.id}">update
-							me!</a></td>
-					<td><a href="deletestudent?studentId=${student.id}">delete
-							me</a></td>
+					<td><c:out value="${building.buildingName}"></c:out></td>
+					<td><c:out value="${building.buildingCost}"></c:out></td>
+					<td><c:out value="${building.buildingLevel}"></c:out></td>
+					<td><a href="upgradingBuilding?planetId=${param.planetId}&buildingId=${building.buildingId}">Upgrade Building</a></td>
+					<td><a href="deletingBuilding?buildingId=${building.buildingId}">Demolish Building</a></td>
 				</tr>
 			</c:forEach>
-
 		</table>
 	</div>
 

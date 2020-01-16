@@ -27,7 +27,7 @@ public class Planet {
 	// The @OneToMany annotation is used to define the property in Building class 
 	// that will be used to map the mappedBy variable.
 	// In this case, planet represents the value "planet" inside the Building Class.
-	@OneToMany(mappedBy = "planet")
+	@OneToMany //(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Building> buildings;
 	
 	//constructors
