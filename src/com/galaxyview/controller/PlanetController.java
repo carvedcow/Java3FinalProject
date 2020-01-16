@@ -16,7 +16,8 @@ import com.galaxyview.service.PlanetService;
 public class PlanetController {
 	@Autowired
 	PlanetService planetService;
-	
+		
+	// PLANET LIST PAGE
 	@RequestMapping(value = "/planetList")
 	public ModelAndView getPlanetList() {
 		ModelAndView mv = new ModelAndView("PlanetList");
@@ -27,6 +28,7 @@ public class PlanetController {
 		return mv;
 	}
 	
+	// ADDING PLANETS PAGE
 	@RequestMapping(value = "/addPlanet")
 	public ModelAndView getAddPlanet() {
 		ModelAndView mv = new ModelAndView("addPlanet");
@@ -34,11 +36,39 @@ public class PlanetController {
 		return mv;
 	}
 	
+	// ADDING PLANETS ACTION
 	@RequestMapping(value = "/addingPlanet")
 	public String addingPlanet(Planet planet) {
 		String returnString = "redirect:/planets/planetList";
 		
 		planetService.addPlanet(planet);
+		
+		return returnString;
+	}
+	
+	// ADDING RESOURCES ACTION
+	@RequestMapping(value = "/collectingResource")
+	public String collectingResource(int planetId) {
+		String returnString = "redirect:/planets/planetList";
+		
+		Planet fetchedPlanet = planetService.getPlanetById(planetId);
+		
+		int resource = fetchedPlanet.getPlanetResource();
+		resource += 10;
+		fetchedPlanet.setPlanetResource(resource);
+		
+		planetService.updatePlanet(fetchedPlanet);
+		
+		
+		return returnString;
+	}
+	
+	// DELETE PLANET ACTION
+	@RequestMapping(value = "/deletingPlanet")
+	public String deletingPlanet(int planetId) {
+		String returnString = "redirect:/planets/planetList";
+		
+		planetService.deletePlanet(planetId);
 		
 		return returnString;
 	}

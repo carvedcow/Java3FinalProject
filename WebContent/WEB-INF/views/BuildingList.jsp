@@ -9,13 +9,16 @@
 <title>Buildings</title>
 </head>
 <body>
-	<div><a href="addBuilding">Construct new building.</a></div>
+	<div><a href="addBuilding?planetId=${param.planetId}">Construct new building.</a></div>
+	<div hidden="true">Current planetId: ${param.planetId}</div>
+	<div>Current Planet: ${param.planetName}</div>
+	<div>Current Resources: ${param.planetResource}</div>
 	<div align="center">
 		Current Buildings
 		<table border="1">
 			<tr>
 				<th>Name</th>
-				<th>Resources needed for next level</th>
+				<th>Cost</th>
 				<th>Level</th>
 			</tr>
 			<c:forEach var="building" items="${buildingList}">
@@ -23,8 +26,8 @@
 					<td><c:out value="${building.buildingName}"></c:out></td>
 					<td><c:out value="${building.buildingCost}"></c:out></td>
 					<td><c:out value="${building.buildingLevel}"></c:out></td>
-					<td><a href="editBuilding?buildingId=${building.buildingId}">Upgrade Building</a></td>
-					<td><a href="deleteBuilding?buildingId=${building.buildingId}">Demolish Building</a></td>
+					<td><a href="upgradingBuilding?planetId=${param.planetId}&buildingId=${building.buildingId}">Upgrade Building</a></td>
+					<td><a href="deletingBuilding?buildingId=${building.buildingId}">Demolish Building</a></td>
 				</tr>
 			</c:forEach>
 		</table>
