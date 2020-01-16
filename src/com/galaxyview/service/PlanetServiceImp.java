@@ -2,38 +2,45 @@ package com.galaxyview.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.galaxyview.dao.PlanetDao;
 import com.galaxyview.model.Planet;
 
+@Service
+@Transactional
 public class PlanetServiceImp implements PlanetService{
-
+	
+	// Values
+	@Autowired
+	PlanetDao planetDao;
+	
 	@Override
-	public boolean addPlanet() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addPlanet(Planet planet) {
+		return planetDao.insertPlanet(planet);
 	}
 
 	@Override
 	public List<Planet> getPlanets() {
-		// TODO Auto-generated method stub
-		return null;
+		return planetDao.getPlanets();
 	}
 
 	@Override
 	public Planet getPlanetById(int planetId) {
-		// TODO Auto-generated method stub
-		return null;
+		return planetDao.getPlanetById(planetId);
 	}
 
 	@Override
 	public boolean updatePlanet(Planet planet) {
-		// TODO Auto-generated method stub
-		return false;
+		return planetDao.updatePlanet(planet);
 	}
 
 	@Override
 	public boolean deletePlanet(int planetId) {
-		// TODO Auto-generated method stub
-		return false;
+		return planetDao.deletePlanet(planetId);
 	}
 
 }
