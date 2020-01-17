@@ -6,6 +6,8 @@ http://localhost:8080/Java3FinalProject/planets/planetList
 
 --------
 
+Schema name: galaxyview
+
 CREATE TABLE `buildings` (
   `buildingId` int(11) NOT NULL AUTO_INCREMENT,
   `buildingName` varchar(45) DEFAULT NULL,
