@@ -60,7 +60,7 @@ public class BuildingController {
 
 	// ADDING BUILDINGS ACTION
 	@RequestMapping(value = "/addingBuilding")
-	//@modelAttribute goes to your jsp to be used there
+	//@ModelAttribute goes to your jsp to be used there
 	public String addingBuilding(@ModelAttribute("building") Building building) {
 
 		String returnString = "redirect:/planets/planetList";

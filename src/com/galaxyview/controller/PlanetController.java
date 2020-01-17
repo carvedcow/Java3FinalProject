@@ -38,7 +38,7 @@ public class PlanetController {
 
 	// ADDING PLANETS ACTION
 	@RequestMapping(value = "/addingPlanet")
-	//@modelAttribute goes to your jsp to be used there
+	//@ModelAttribute goes to your jsp to be used there
 	public String addingPlanet(@ModelAttribute("planet") Planet planet) {
 		String returnString = "redirect:/planets/planetList";
 
