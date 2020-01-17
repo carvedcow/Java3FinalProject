@@ -9,7 +9,7 @@
 <title>Buildings</title>
 </head>
 <body>
-	<div><a href="addBuilding?planetId=${param.planetId}">Construct new building.</a></div>
+	<div><a href="addBuilding?planetId=${param.planetId}">Construct new building</a></div>
 	<div hidden="true">Current planetId: ${param.planetId}</div>
 	<div>Current Planet: ${param.planetName}</div>
 	<div>Current Resources: ${param.planetResource}</div>

@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -14,6 +16,7 @@ public class Building {
 	//values
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "buildingId")
 	private int buildingId;
 	
 	@Column(name = "buildingName")
@@ -25,21 +28,25 @@ public class Building {
 	@Column(name = "buildingLevel")
 	private int buildingLevel;
 	
-	@Column(name = "planetId")
-	private int planetId;
+//	@Column(name = "planetId")
+//	private int planetId;
 	
-//	@ManyToOne
-//	@JoinColumn(name="planetId", nullable=false)
-//	private Planet planet;
+	@ManyToOne
+	@JoinColumn(name="planetId", nullable=false)
+	private Planet planet;
 	
 	//constructors
 	public Building() {
 		
 	}
 	
-	public Building(int planetId) {
-		this.planetId = planetId;
-	}
+//	public Building(int planetId) {
+//		this.planetId = planetId;
+//	}
+	
+//	public Building(Planet planet) {
+//		this.planet = planet;
+//	}
 	
 	//methods
 	public int getBuildingId() {
@@ -67,21 +74,21 @@ public class Building {
 		this.buildingLevel = buildingLevel;
 	}
 
-	public int getPlanetId() {
-		return planetId;
-	}
-
-	public void setPlanetId(int planetId) {
-		this.planetId = planetId;
-	}
+//	public int getPlanetId() {
+//		return planetId;
+//	}
+//
+//	public void setPlanetId(int planetId) {
+//		this.planetId = planetId;
+//	}
 
 	
-//	public Planet getPlanet() {
-//		return planet;
-//	}
-//	public void setPlanet(Planet planet) {
-//		this.planet = planet;
-//	}
+	public Planet getPlanet() {
+		return planet;
+	}
+	public void setPlanet(Planet planet) {
+		this.planet = planet;
+	}
 	
 	
 }

@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.galaxyview.model.Building;
@@ -30,13 +32,15 @@ public class BuildingController {
 
 		List<Building> Buildings = buildingService.getBuildings();
 		List<Building> validBuildings = new ArrayList<Building>();
+
+		
 		
 		for (Building b : Buildings) {
-			if (b.getPlanetId() == planetId) {
+			if (b.getPlanet().getPlanetId() == planetId) {
 				validBuildings.add(b);
 			}
 		}
-		
+
 		mv.addObject("buildingList", validBuildings);
 		mv.addObject("building", new Building());
 		return mv;
@@ -44,17 +48,21 @@ public class BuildingController {
 
 	// ADDING BUILDINGS PAGE
 	@RequestMapping(value = "/addBuilding")
-	public ModelAndView getAddBuilding(int planetId) {
+	public ModelAndView getAddBuilding(@RequestParam("planetId") int planetId) {
 		ModelAndView mv = new ModelAndView("addBuilding");
-		mv.addObject("building", new Building(planetId));
-		
+		Planet fetchedPlanet = planetService.getPlanetById(planetId);
+		Building building = new Building();
+		building.setPlanet(fetchedPlanet);
+		mv.addObject("building", building);
+
 		return mv;
 	}
 
 	// ADDING BUILDINGS ACTION
 	@RequestMapping(value = "/addingBuilding")
-	public String addingBuilding(Building building) {
-		
+	//@modelAttribute goes to your jsp to be used there
+	public String addingBuilding(@ModelAttribute("building") Building building) {
+
 		String returnString = "redirect:/planets/planetList";
 		building.setBuildingCost(10);
 		building.setBuildingLevel(1);
@@ -62,43 +70,42 @@ public class BuildingController {
 
 		return returnString;
 	}
-	
+
 	// UPGRADING BUILDING ACTION
-		@RequestMapping(value = "/upgradingBuilding")
-		public String upgradingBuilding(int planetId, int buildingId) {
-			String returnString = "redirect:/planets/planetList";
-			
-			Planet fetchedPlanet = planetService.getPlanetById(planetId);
-			Building fetchedBuilding = buildingService.getBuildingById(buildingId);
-			
-			int resource = fetchedPlanet.getPlanetResource();
-			int cost = fetchedBuilding.getBuildingCost();
-			int currentLevel = fetchedBuilding.getBuildingLevel();
-			
-			if(resource >= cost) {
-				resource = resource - cost;
-				cost *= 2;
-				currentLevel += 1;
-			}
-			
-			fetchedPlanet.setPlanetResource(resource);
-			fetchedBuilding.setBuildingCost(cost);
-			fetchedBuilding.setBuildingLevel(currentLevel);
-			
-			planetService.updatePlanet(fetchedPlanet);
-			buildingService.updateBuilding(fetchedBuilding);
-			
-			
-			return returnString;
+	@RequestMapping(value = "/upgradingBuilding")
+	public String upgradingBuilding(int planetId, int buildingId) {
+		String returnString = "redirect:/planets/planetList";
+
+		Planet fetchedPlanet = planetService.getPlanetById(planetId);
+		Building fetchedBuilding = buildingService.getBuildingById(buildingId);
+
+		int resource = fetchedPlanet.getPlanetResource();
+		int cost = fetchedBuilding.getBuildingCost();
+		int currentLevel = fetchedBuilding.getBuildingLevel();
+
+		if (resource >= cost) {
+			resource = resource - cost;
+			cost *= 2;
+			currentLevel += 1;
 		}
-		
-		// DELETE BUILDING ACTION
-		@RequestMapping(value = "/deletingBuilding")
-		public String deletingPlanet(int buildingId) {
-			String returnString = "redirect:/planets/planetList";
-			
-			buildingService.deleteBuilding(buildingId);
-			
-			return returnString;
-		}
+
+		fetchedPlanet.setPlanetResource(resource);
+		fetchedBuilding.setBuildingCost(cost);
+		fetchedBuilding.setBuildingLevel(currentLevel);
+
+		planetService.updatePlanet(fetchedPlanet);
+		buildingService.updateBuilding(fetchedBuilding);
+
+		return returnString;
+	}
+
+	// DELETE BUILDING ACTION
+	@RequestMapping(value = "/deletingBuilding")
+	public String deletingPlanet(int buildingId) {
+		String returnString = "redirect:/planets/planetList";
+
+		buildingService.deleteBuilding(buildingId);
+
+		return returnString;
+	}
 }

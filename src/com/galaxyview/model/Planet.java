@@ -2,6 +2,7 @@ package com.galaxyview.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +17,7 @@ public class Planet {
 	//values
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "planetId")
 	private int planetId;
 	
 	@Column(name = "planetName")
@@ -27,7 +29,7 @@ public class Planet {
 	// The @OneToMany annotation is used to define the property in Building class 
 	// that will be used to map the mappedBy variable.
 	// In this case, planet represents the value "planet" inside the Building Class.
-	@OneToMany //(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany (mappedBy="planet", cascade = CascadeType.ALL)
 	private List<Building> buildings;
 	
 	//constructors
